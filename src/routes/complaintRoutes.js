@@ -7,6 +7,7 @@ const {
   getMyComplaints,
   getAllComplaints,
   updateComplaintStatus,
+  getComplaintSummary,
 } = require("../controllers/complaintController");
 
 const router = express.Router();
@@ -18,5 +19,9 @@ router.get("/my", protect, getMyComplaints);
 // Admin
 router.get("/", protect, isAdmin, getAllComplaints);
 router.put("/:id/status", protect, isAdmin, updateComplaintStatus);
+
+// Admin dashboard summary
+router.get("/summary", protect, isAdmin, getComplaintSummary);
+
 
 module.exports = router;

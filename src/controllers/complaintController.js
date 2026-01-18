@@ -80,4 +80,22 @@ exports.updateComplaintStatus = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+exports.getComplaintSummary = async (req, res) => {
+  try {
+    const total = await Complaint.countDocuments();
+
+    const pending = await Complaint.countDocuments({ status: "pending" });
+    const inProgress = await Complaint.countDocuments({ status: "in-progress" });
+    const resolved = await Complaint.countDocuments({ status: "resolved" });
+
+    res.json({
+      total,
+      pending,
+      inProgress,
+      resolved,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
