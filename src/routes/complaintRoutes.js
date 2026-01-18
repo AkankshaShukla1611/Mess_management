@@ -1,4 +1,5 @@
 const express = require("express");
+const router = express.Router();
 const { protect } = require("../middleware/authMiddleware");
 const { isAdmin } = require("../middleware/roleMiddleware");
 
@@ -10,7 +11,9 @@ const {
   getComplaintSummary,
 } = require("../controllers/complaintController");
 
-const router = express.Router();
+
+// Admin dashboard summary
+router.get("/summary", protect, isAdmin, getComplaintSummary);
 
 // Student
 router.post("/", protect, createComplaint);
@@ -20,8 +23,7 @@ router.get("/my", protect, getMyComplaints);
 router.get("/", protect, isAdmin, getAllComplaints);
 router.put("/:id/status", protect, isAdmin, updateComplaintStatus);
 
-// Admin dashboard summary
-router.get("/summary", protect, isAdmin, getComplaintSummary);
+
 
 
 module.exports = router;
