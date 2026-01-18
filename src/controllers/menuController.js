@@ -17,18 +17,9 @@ exports.addMenu = async (req, res) => {
 // Student/Admin: Get today’s menu
 exports.getTodayMenu = async (req, res) => {
   try {
-    const startOfDay = new Date();
-    startOfDay.setHours(0, 0, 0, 0);
+    const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
 
-    const endOfDay = new Date();
-    endOfDay.setHours(23, 59, 59, 999);
-
-    const menu = await Menu.findOne({
-      date: {
-        $gte: startOfDay,
-        $lte: endOfDay,
-      },
-    });
+    const menu = await Menu.findOne({ date: today });
 
     if (!menu) {
       return res.status(404).json({ message: "Menu not found" });
@@ -39,4 +30,3 @@ exports.getTodayMenu = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
