@@ -35,22 +35,20 @@ exports.signup = async (req, res) => {
 // LOGIN
 exports.login = async (req, res) => {
   try {
-    // console.log("LOGIN BODY:", req.body); // 👈 LOG 1
-
     const { email, password } = req.body;
 
+    console.log("LOGIN EMAIL:", email);
+    console.log("LOGIN PASSWORD:", password);
+
     const user = await User.findOne({ email });
-    // console.log("USER FROM DB:", user); // 👈 LOG 2
+    console.log("USER FROM DB:", user);
 
     if (!user) {
-      console.log("❌ USER NOT FOUND");
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    // console.log("HASHED PASSWORD:", user.password); // 👈 LOG 3
-
     const isMatch = await bcrypt.compare(password, user.password);
-    // console.log("PASSWORD MATCH:", isMatch); // 👈 LOG 4
+    console.log("PASSWORD MATCH:", isMatch);
 
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password" });
@@ -72,7 +70,7 @@ exports.login = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("LOGIN ERROR:", error);
+    console.error(error);
     res.status(500).json({ error: error.message });
   }
 };
